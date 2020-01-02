@@ -1,9 +1,9 @@
 import React from "react";
-// import "./PrimaryButton.scss";
+import "./PrimaryButton.scss";
 
 const PrimaryButton = () => {
 	return (
-		<button class="primary-button">Click me</button>
+		<button className="primary-button">Click me</button>
 	);
 };
 
