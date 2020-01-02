@@ -4,7 +4,11 @@
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
 module.exports = {
+  siteMetadata: {
+    title: `Title from siteMetadata2`,
+  },
   plugins: [
+    'gatsby-plugin-emotion',
     {
       resolve: `gatsby-plugin-typography`,
       options: {
