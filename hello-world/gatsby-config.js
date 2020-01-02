@@ -3,7 +3,17 @@
  *
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
-
 module.exports = {
-  plugins: [`gatsby-plugin-sass`]
+  plugins: [
+    {
+      resolve: `gatsby-plugin-typography`,
+      options: {
+        pathToConfigModule: `src/utils/typography`,
+      },
+    },
+
+    {
+      resolve: `gatsby-plugin-sass`,
+    }
+  ],
 }
