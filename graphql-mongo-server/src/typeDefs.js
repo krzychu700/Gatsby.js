@@ -9,13 +9,24 @@ export const typeDefs = gql `
   type Character {
     id: ID!
     name: String!,
-    death: String!,
-    pseudonym: String!,
-    title: String!,
+    death: String,
+    pseudonym: String,
+    title: String,
     sex: String!,
     race: String!,
     profession: String!,
     relations: [Relations]
+  }
+
+  input CharacterInput {
+    name: String!
+    death: String
+    pseudonym: String
+    title: String
+    sex: String!
+    race: String!
+    profession: String!
+    relations: String
   }
 
   type Relations {
@@ -24,6 +35,6 @@ export const typeDefs = gql `
   }
 
   type Mutation {
-    createCharacter(name: String!, death: String!, pseudonym: String!, title: String!, sex: String!, race: String!, profession: String!, relations: String!): Character!
+    createCharacter(characterInput: CharacterInput): Character!
   }
 `;
