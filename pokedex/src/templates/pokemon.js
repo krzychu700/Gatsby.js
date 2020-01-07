@@ -13,7 +13,12 @@ export default ({ data }) => {
       <SEO title={pokemon.name} />
         <div className="pokemon_wrapper">
           <div className="pokemon_header">
-            <h1 className="pokemon_name">{pokemon.name}</h1>
+            <div className="pokemon_header_container">
+              <div className="pokemon_name_left"/>
+              <div className="pokemon_name">{`#${pokemon.number} `}{pokemon.name}</div>
+              <div className="pokemon_name_right"/>
+            </div>
+
           </div>
 
           <div className="pokemon_container pokemon_container--info">
