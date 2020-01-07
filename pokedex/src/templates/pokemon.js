@@ -4,7 +4,7 @@ import Layout from "../components/layout"
 import SEO from '../components/seo'
 import Image from '../components/Image'
 
-import "./pokemon.css"
+import "./pokemon.scss"
 
 export default ({ data }) => {
   const pokemon = data.pokedex.pokemon
@@ -13,12 +13,12 @@ export default ({ data }) => {
       <SEO title={pokemon.name} />
         <div className="pokemon_wrapper">
           <div className="pokemon_header">
-            <h1 className="f4">{pokemon.name}</h1>
+            <h1 className="pokemon_name">{pokemon.name}</h1>
           </div>
 
           <div className="pokemon_container pokemon_container--info">
             <div className="pokemon_picture">
-              <img src={pokemon.image} alt={pokemon.name} className="br-100 h3 w3 dib" title={pokemon.name} />
+              <img src={pokemon.image} alt={pokemon.name}/>
             </div>
 
             <div className="pokemon_information">
