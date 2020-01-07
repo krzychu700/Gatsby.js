@@ -26,10 +26,28 @@ export default ({ data }) => {
               <img src={pokemon.image} alt={pokemon.name}/>
             </div>
 
-            <div className="pokemon_information">
-              {pokemon.maxHP}
-              {pokemon.types.map(type => <Image alt={type} filename={`${type}.png`} width={"25px"}/>)}
+            <div className="pokemon_HP_container">
+              <div className="pokemon_health_bar"/>
+              <div className="pokemon_HP_status">
+                {`HP: ${pokemon.maxHP}`}
+              </div>
             </div>
+
+            <div className="pokemon_information">
+              <p>Weight:</p>
+              <span>{`Minimum: ${pokemon.weight.minimum}`}</span>
+              <span>{`Maximum: ${pokemon.weight.maximum}`}</span>
+              <p>Height:</p>
+              <span>{`Minimum: ${pokemon.height.minimum}`}</span>
+              <span>{`Maximum: ${pokemon.height.maximum}`}</span>
+              <p>Classification:</p>
+              <span>{pokemon.classification}</span>
+              <p>Max CP: <span>{pokemon.maxCP}</span></p>
+              <p>Type:</p>
+              <div className="pokemon_types">
+                {pokemon.types.map(type => <Image key={type} alt={type} filename={`${type}.png`} width={"25px"}/>)}
+              </div>
+               </div>
           </div>
 
           <div className="pokemon_container pokemon_container--stats">
@@ -39,10 +57,10 @@ export default ({ data }) => {
 
             <div className="pokemon_graphic_stats">
               <div className="pokemon_weakness">
-                {pokemon.weaknesses.map(weak => <Image alt={weak} filename={`${weak}.png`} width={"25px"}/>)}
+                {pokemon.weaknesses.map(weak => <Image key={weak} alt={weak} filename={`${weak}.png`} width={"25px"}/>)}
               </div>
               <div className="pokemon_resistant">
-                {pokemon.resistant.map(resistant => <Image alt={resistant} filename={`${resistant}.png`} width={"25px"}/>)}
+                {pokemon.resistant.map(resistant => <Image key={resistant} alt={resistant} filename={`${resistant}.png`} width={"25px"}/>)}
               </div>
             </div>
           </div>
