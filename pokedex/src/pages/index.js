@@ -18,7 +18,7 @@ const IndexPage = ({data}) => (
                   <p>{`#${pokemon.number} `}{pokemon.name}</p>
                   <div className="pokemon_type">
                     {pokemon.types.map( type => 
-                      <Image alt={type} filename={`${type}.png`} width={"25px"}/>
+                      <Image key={type} alt={type} filename={`${type}.png`} width={"25px"}/>
                     )}
                   </div>
                 </div>

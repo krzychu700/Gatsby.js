@@ -3,6 +3,8 @@ import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import SEO from '../components/seo'
 import Image from '../components/Image'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 import "./pokemon.scss"
 
@@ -51,33 +53,61 @@ export default ({ data }) => {
           </div>
 
           <div className="pokemon_container pokemon_container--stats">
-            <div className="pokemon_stats">
-              
-            </div>
-
             <div className="pokemon_graphic_stats">
               <div className="pokemon_weakness">
-                {pokemon.weaknesses.map(weak => <Image key={weak} alt={weak} filename={`${weak}.png`} width={"25px"}/>)}
+                <p>Weaknesses:</p>
+                <div>{pokemon.weaknesses.map(weak => <Image key={weak} alt={weak} filename={`${weak}.png`} width={"25px"}/>)}</div>
               </div>
               <div className="pokemon_resistant">
-                {pokemon.resistant.map(resistant => <Image key={resistant} alt={resistant} filename={`${resistant}.png`} width={"25px"}/>)}
+                <p>Resistants:</p>
+                <div>{pokemon.resistant.map(resistant => <Image key={resistant} alt={resistant} filename={`${resistant}.png`} width={"25px"}/>)}</div>
               </div>
             </div>
           </div>
 
           <div className="pokemon_attacks">
             <div className="pokemon_attacks_fast">
-
+              <p>Pokemon fast attacks:</p>
+                {pokemon.attacks.fast.map(attack => 
+                  <div key={attack.name} className="pokemon_attacks_wrapper">
+                    <span>{attack.name}</span>
+                    <Image alt={attack.type} filename={`${attack.type}.png`} width={"25px"}/>
+                    <span>{`Dmg: ${attack.damage}`}</span>
+                  </div>
+                )}
             </div>
             <div className="pokemon_attacks_special">
-              
+              <p>Pokemon special attacks:</p>
+                {pokemon.attacks.special.map(attack => 
+                  <div key={attack.name} className="pokemon_attacks_wrapper">
+                    <span>{attack.name}</span>
+                    <Image alt={attack.type} filename={`${attack.type}.png`} width={"25px"}/>
+                    <span>{`Dmg: ${attack.damage}`}</span>
+                  </div>
+                )}
             </div>
           </div>
-
-          <div className="pokemon_evolutions">
-
-          </div>
-
+          
+          {pokemon.evolutions &&
+            <div>
+              <p className="pokemon_evolutions_title">Pokemon evolutions:</p>
+              <div className="pokemon_evolutions">
+                {pokemon.evolutions.map((evolution, index) =>
+                  <div key={evolution.name} className="pokemon_evolution_wrapper">
+                    {index > 0 &&
+                      <div className="pokemon_next_evolution">
+                        <FontAwesomeIcon icon={faChevronRight}/>
+                      </div>
+                    }
+                    <div className="pokemon_evolution">
+                      <p>{`#${evolution.number}  ${evolution.name}`}</p>
+                      <img src={evolution.image} alt={evolution.name}/>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          }
         </div>
     </Layout>
   )
@@ -118,9 +148,9 @@ export const query = graphql`
         weaknesses,
         resistant,
         evolutions {
-          types,
           number,
-          name
+          name,
+          image
         }
       }
     }
