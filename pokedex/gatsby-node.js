@@ -7,19 +7,26 @@ exports.createPages = ({ graphql, actions}) => {
     query {
       pokedex {
         pokemons(first: 151) {
-          name
+          name, number, image
         }
       }
     }
   `).then(result => {
-      result.data.pokedex.pokemons.forEach(pokemon =>{
-        createPage({
-          path: `/pokemon/${pokemon.name}`,
-          component: path.resolve('./src/templates/pokemon.js'),
-          context: {
-            name: pokemon.name
-          }
-        })
+    for(let i = 0; i < result.data.pokedex.pokemons.length; i++) {
+      const pokemon = result.data.pokedex.pokemons[i];
+      createPage({
+        ...pokemon,
+        path: `/pokemon/${pokemon.name}`,
+        component: path.resolve('./src/templates/pokemon.js'),
+        context: {
+          ...pokemon.context,
+          name: pokemon.name,
+          number: pokemon.number,
+          pokemonData: result.data.pokedex.pokemons,
+          index: i
+        }
       })
+
+    }
   })
 }

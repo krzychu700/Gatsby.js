@@ -4,12 +4,14 @@ import Layout from "../components/layout"
 import SEO from '../components/seo'
 import Image from '../components/Image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 import "./pokemon.scss"
 
-export default ({ data }) => {
+
+export default ({ data, pageContext }) => {
   const pokemon = data.pokedex.pokemon
+  console.log(data, pageContext)
   return (
     <Layout>
       <SEO title={pokemon.name} />
@@ -108,6 +110,30 @@ export default ({ data }) => {
               </div>
             </div>
           }
+        </div>
+
+        <div className="previous_pokemon">
+          <div className="page_navigation_wrapper">
+            <div className="page_navigation_button">
+              <FontAwesomeIcon icon={faChevronLeft}/>
+            </div>
+            <div className="navigation_pokemon_data">
+              <img src={pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].image} alt={pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].name}/>
+              <p>{`#${pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].number}  ${pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].name}`}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="next_pokemon">
+          <div className="page_navigation_wrapper">
+            <div className="navigation_pokemon_data">
+              <img src={pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].image} alt={pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].name}/>
+              <p>{`#${pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].number}  ${pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].name}`}</p>
+            </div>
+            <div className="page_navigation_button">
+              <FontAwesomeIcon icon={faChevronRight}/>
+            </div>
+          </div>
         </div>
     </Layout>
   )
