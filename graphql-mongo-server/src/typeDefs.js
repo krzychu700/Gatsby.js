@@ -15,7 +15,7 @@ export const typeDefs = gql `
     sex: String!,
     race: String!,
     profession: String!,
-    relations: [Relations]
+    relations: [Relation]
   }
 
   input CharacterInput {
@@ -29,12 +29,14 @@ export const typeDefs = gql `
     relations: String
   }
 
-  type Relations {
+  type Relation {
     id: ID!
     name: String!
+    # relation: [Character!]
   }
 
   type Mutation {
     createCharacter(characterInput: CharacterInput): Character!
+    createRelation(name: String!): Relation!
   }
 `;

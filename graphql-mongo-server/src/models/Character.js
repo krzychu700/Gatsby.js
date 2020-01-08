@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-export const Character = mongoose.model('Character', { 
+const Schema = mongoose.Schema;
+
+export const Character = mongoose.model('Character', new mongoose.Schema({ 
   name: {
     type: String,
     required: true
@@ -20,5 +22,10 @@ export const Character = mongoose.model('Character', {
     type: String,
     required: true
   },
-  relations: String
-});
+  relations: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Relation'
+    }
+  ]
+}));
