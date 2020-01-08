@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import Layout from "../components/layout"
 import SEO from '../components/seo'
 import Image from '../components/Image'
@@ -11,7 +11,6 @@ import "./pokemon.scss"
 
 export default ({ data, pageContext }) => {
   const pokemon = data.pokedex.pokemon
-  console.log(data, pageContext)
   return (
     <Layout>
       <SEO title={pokemon.name} />
@@ -30,13 +29,6 @@ export default ({ data, pageContext }) => {
               <img src={pokemon.image} alt={pokemon.name}/>
             </div>
 
-            <div className="pokemon_HP_container">
-              <div className="pokemon_health_bar"/>
-              <div className="pokemon_HP_status">
-                {`HP: ${pokemon.maxHP}`}
-              </div>
-            </div>
-
             <div className="pokemon_information">
               <p>Weight:</p>
               <span>{`Minimum: ${pokemon.weight.minimum}`}</span>
@@ -51,7 +43,14 @@ export default ({ data, pageContext }) => {
               <div className="pokemon_types">
                 {pokemon.types.map(type => <Image key={type} alt={type} filename={`${type}.png`} width={"25px"}/>)}
               </div>
-               </div>
+
+              <div className="pokemon_HP_container">
+                <div className="pokemon_health_bar"/>
+                <div className="pokemon_HP_status">
+                  {`HP: ${pokemon.maxHP}`}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="pokemon_container pokemon_container--stats">
@@ -101,10 +100,12 @@ export default ({ data, pageContext }) => {
                         <FontAwesomeIcon icon={faChevronRight}/>
                       </div>
                     }
-                    <div className="pokemon_evolution">
-                      <p>{`#${evolution.number}  ${evolution.name}`}</p>
-                      <img src={evolution.image} alt={evolution.name}/>
-                    </div>
+                    <Link to={`/pokemon/${evolution.name}`}>
+                      <div className="pokemon_evolution">
+                        <p>{`#${evolution.number}  ${evolution.name}`}</p>
+                        <img src={evolution.image} alt={evolution.name}/>
+                      </div>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -112,29 +113,33 @@ export default ({ data, pageContext }) => {
           }
         </div>
 
-        <div className="previous_pokemon">
-          <div className="page_navigation_wrapper">
-            <div className="page_navigation_button">
-              <FontAwesomeIcon icon={faChevronLeft}/>
-            </div>
-            <div className="navigation_pokemon_data">
-              <img src={pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].image} alt={pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].name}/>
-              <p>{`#${pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].number}  ${pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].name}`}</p>
+        <Link to={`/pokemon/${pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].name}`}>
+          <div className="previous_pokemon">
+            <div className="page_navigation_wrapper">
+              <div className="page_navigation_button">
+                <FontAwesomeIcon icon={faChevronLeft}/>
+              </div>
+              <div className="navigation_pokemon_data">
+                <img src={pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].image} alt={pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].name}/>
+                <p>{`#${pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].number}  ${pageContext.pokemonData[pageContext.index === 0 ? 150 : pageContext.index - 1].name}`}</p>
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
 
-        <div className="next_pokemon">
-          <div className="page_navigation_wrapper">
-            <div className="navigation_pokemon_data">
-              <img src={pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].image} alt={pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].name}/>
-              <p>{`#${pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].number}  ${pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].name}`}</p>
-            </div>
-            <div className="page_navigation_button">
-              <FontAwesomeIcon icon={faChevronRight}/>
-            </div>
+        <Link to={`/pokemon/${pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].name}`}>
+          <div className="next_pokemon">
+            <div className="page_navigation_wrapper">
+                <div className="navigation_pokemon_data">
+                  <img src={pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].image} alt={pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].name}/>
+                  <p>{`#${pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].number}  ${pageContext.pokemonData[pageContext.index === 150 ? 0 : pageContext.index + 1].name}`}</p>
+                </div>
+                <div className="page_navigation_button">
+                  <FontAwesomeIcon icon={faChevronRight}/>
+                </div>
+              </div>
           </div>
-        </div>
+        </Link>
     </Layout>
   )
 }
