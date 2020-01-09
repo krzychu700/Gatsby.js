@@ -29,7 +29,7 @@ const Image = props => (
         return null;
       }
 
-      return <Img alt={props.alt} fluid={image.node.childImageSharp.fluid} style={{width: `${props.width}`, margin: "0.2rem"}}/>;
+      return <Img alt={props.alt} fluid={image.node.childImageSharp.fluid} style={{width: `${props.width}`, margin: "0.2rem", height: `${props.height}`}}/>;
     }}
   />
 );

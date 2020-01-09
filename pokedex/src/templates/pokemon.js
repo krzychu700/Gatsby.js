@@ -1,4 +1,5 @@
 import React from "react"
+import { useState, useEffect } from "react";
 import { graphql, Link } from "gatsby"
 import Layout from "../components/layout"
 import SEO from '../components/seo'
@@ -8,9 +9,35 @@ import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons
 
 import "./pokemon.scss"
 
-
 export default ({ data, pageContext }) => {
-  const pokemon = data.pokedex.pokemon
+  const pokemon = data.pokedex.pokemon;
+
+  const [pokemonHeight, setPokemonHeight] = useState();
+  const [scale, setScale] = useState({});
+
+  useEffect(() => { 
+    const minHeight = parseFloat((pokemon.height.minimum).replace("m", ''));
+    const maxHeight = parseFloat((pokemon.height.maximum).replace("m", ''));
+    const pokemonHeight = ((minHeight + maxHeight) / 2).toFixed(1);
+    let scaleRation, ratio, height, menWidth;
+
+    if(pokemonHeight >= 2 ) {
+      scaleRation = 30;
+      ratio = Math.ceil((pokemonHeight / 0.5));
+      height = (145 - (ratio * 5)) / (ratio + 1);
+      menWidth = ((3.5 * (height + 5)) / 2.6 );
+      setPokemonHeight((pokemonHeight / 0.5) * (height + 5));
+    } else {
+      scaleRation = 68;
+      ratio = 4;
+      height = 30;
+      menWidth = 48;
+      setPokemonHeight(pokemonHeight * scaleRation);
+    }
+    
+    setScale({ratio: ratio, height: height, menWidth: menWidth})
+   }, [pokemon.height.minimum, pokemon.height.maximum, pokemon.name]);
+
   return (
     <Layout>
       <SEO title={pokemon.name} />
@@ -29,28 +56,42 @@ export default ({ data, pageContext }) => {
               <img src={pokemon.image} alt={pokemon.name}/>
             </div>
 
-            <div className="pokemon_information">
-              <p>Weight:</p>
-              <span>{`Minimum: ${pokemon.weight.minimum}`}</span>
-              <span>{`Maximum: ${pokemon.weight.maximum}`}</span>
-              <p>Height:</p>
-              <span>{`Minimum: ${pokemon.height.minimum}`}</span>
-              <span>{`Maximum: ${pokemon.height.maximum}`}</span>
-              <p>Classification:</p>
-              <span>{pokemon.classification}</span>
-              <p>Max CP: <span>{pokemon.maxCP}</span></p>
-              <p>Type:</p>
-              <div className="pokemon_types">
-                {pokemon.types.map(type => <Image key={type} alt={type} filename={`${type}.png`} width={"25px"}/>)}
-              </div>
+            <div style={{width: '55%'}}>
+              <div className="pokemon_information">
+                <p>Weight:</p>
+                <span>{`Minimum: ${pokemon.weight.minimum}`}</span>
+                <span>{`Maximum: ${pokemon.weight.maximum}`}</span>
+                <p>Classification:</p>
+                <span>{pokemon.classification}</span>
+                <p>Max CP: <span>{pokemon.maxCP}</span></p>
+                <p>Type:</p>
+                <div className="pokemon_types">
+                  {pokemon.types.map(type => <Image key={type} alt={type} filename={`${type}.png`} width={"25px"}/>)}
+                </div>
 
-              <div className="pokemon_HP_container">
-                <div className="pokemon_health_bar"/>
-                <div className="pokemon_HP_status">
-                  {`HP: ${pokemon.maxHP}`}
+                <div className="pokemon_HP_container">
+                  <div className="pokemon_health_bar"/>
+                  <div className="pokemon_HP_status">
+                    {`HP: ${pokemon.maxHP}`}
+                  </div>
                 </div>
               </div>
+
+              <div className="pokemon_height_container">
+                <div className="pokemon_height_scale">
+                  {[...Array(scale.ratio)].map((e, i) => 
+                    <div key={i} className="height_line_wrapper" style={{marginBottom: `${scale.height}px`}}>
+                      <span style={{fontSize: "12px"}}>{`${((i + 1) * 0.5).toFixed(1)}m`}</span><div className="height_line"/>
+                    </div>
+                  )}
+                </div>
+
+                <Image alt={"men"} filename={`men.png`} width={`${scale.menWidth}px`}/>
+
+                <img src={pokemon.image} alt={pokemon.name} style={{height: `${pokemonHeight}px`}}/>
+              </div>
             </div>
+
           </div>
 
           <div className="pokemon_container pokemon_container--stats">
@@ -90,7 +131,7 @@ export default ({ data, pageContext }) => {
           </div>
           
           {pokemon.evolutions &&
-            <div>
+            <div style={{width: "100%", padding: "10px"}}>
               <p className="pokemon_evolutions_title">Pokemon evolutions:</p>
               <div className="pokemon_evolutions">
                 {pokemon.evolutions.map((evolution, index) =>
@@ -140,6 +181,7 @@ export default ({ data, pageContext }) => {
               </div>
           </div>
         </Link>
+
     </Layout>
   )
 }
