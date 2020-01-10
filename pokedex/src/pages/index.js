@@ -82,6 +82,7 @@ const IndexPage = ({data}) => {
   ]);
   const [pokemonTypes, setPokemonTypes] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [sort, setSort] = useState("NameAZ");
 
   useEffect(() => {
     let tempArray =[];
@@ -91,7 +92,12 @@ const IndexPage = ({data}) => {
         types: pokemon.types,
         number: pokemon.number,
         id: pokemon.id,
-        image: pokemon.image});
+        image: pokemon.image,
+        weight: pokemon.weight,
+        height: pokemon.height,
+        maxHP: pokemon.maxHP,
+        maxCP: pokemon.maxCP
+      });
     });
     setPokemonsData(tempArray);
     setPokemonTypes(pokemonTypesData);
@@ -124,7 +130,59 @@ const IndexPage = ({data}) => {
           : p
       ));
     }
+  }
 
+  const sortData = (event) => {
+    const { value } = event.target;
+    setSort(value);
+    switch(value) {
+      case "NumberASC":
+        pokemons.sort(dynamicSort("number"));
+        break;
+      case "NumberDES":
+        pokemons.sort(dynamicSort("number", null, "desc"));
+        break;
+      case "NameAZ":
+        pokemons.sort(dynamicSort("name"));
+        break;
+      case "NameZA":
+        pokemons.sort(dynamicSort("name", null, "desc"));
+        break;
+      case "MinHeight":
+        pokemons.sort(dynamicSort("height", "minimum"));
+        break;
+      case "MaxHeight":
+        pokemons.sort(dynamicSort("height", "maximum", "desc"));
+        break;
+      case "MinWeight":
+        pokemons.sort(dynamicSort("weight", "minimum"));
+        break;
+      case "MaxWeight":
+        pokemons.sort(dynamicSort("weight", "maximum", "desc"));
+        break;
+      case "MinHP":
+        pokemons.sort(dynamicSort("maxHP"));
+        break;
+      case "MaxHP":
+        pokemons.sort(dynamicSort("maxHP", null, "desc"));
+        break;
+      case "MinCP":
+        pokemons.sort(dynamicSort("maxCP"));
+        break;
+      case "MaxCP":
+        pokemons.sort(dynamicSort("maxCP", null, "desc"));
+        break;
+      default:
+        pokemons.sort(dynamicSort("number"));
+    }
+  }
+
+
+  const dynamicSort = (prop1, prop2 = null, direction = 'asc') => (e1, e2) => {
+    const a = prop2 ? e1[prop1][prop2] : e1[prop1],
+        b = prop2 ? e2[prop1][prop2] : e2[prop1],
+        sortOrder = direction === "asc" ? 1 : -1
+    return (a < b) ? -sortOrder : (a > b) ? sortOrder : 0;
   }
 
   return (
@@ -136,7 +194,26 @@ const IndexPage = ({data}) => {
         <img src={`../../${pokemonType.type}.png`} id={pokemonType.type} className="filter_pokemon_type" key={pokemonType.type} alt={pokemonType.type}/>
       </span>
       )}
+
+      <div className="pokemon_select_container">
+        <span style={{width: "100%"}}>Sort:</span>
+        <select onChange={sortData} onBlur={null} value={sort}>
+          <option value="NumberASC">Number ASC</option>
+          <option value="NumberDES">Number DES</option>
+          <option value="NameAZ">Name A-Z</option>
+          <option value="NameZA">Name Z-A</option>
+          <option value="MinHeight">Min height</option>
+          <option value="MaxHeight">Max height</option>
+          <option value="MinWeight">Min weight</option>
+          <option value="MaxWeight">Max weight</option>
+          <option value="MinHP">Min HP</option>
+          <option value="MaxHP">Max HP</option>
+          <option value="MinCP">Min CP</option>
+          <option value="MaxCP">Max CP</option>
+        </select>
+      </div>
     </div>
+
     <SEO title="Home" />
       <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap'}}>
         {pokemons.map(pokemon => 
@@ -164,8 +241,22 @@ const IndexPage = ({data}) => {
 export const query = graphql`
   query {
     pokedex {
-      pokemons(first: 200) {
-        number, name, id, image, types
+      pokemons(first: 151) {
+        number,
+        name,
+        id,
+        image,
+        types,
+        weight {
+          minimum,
+          maximum
+        },
+        height {
+          minimum,
+          maximum
+        },
+        maxHP,
+        maxCP
       }
     }
   }
